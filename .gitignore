@@ -1,0 +1,77 @@
+# =========================
+# Global ignores
+# =========================
+# OS / IDE files
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.user
+*.sln.docstates
+.vscode/
+.idea/
+
+# =========================
+# Node / Angular (lms-web)
+# =========================
+lms-web/node_modules/
+lms-web/dist/
+lms-web/.angular/
+lms-web/.env
+lms-web/.env.local
+lms-web/.env.*.local
+lms-web/npm-debug.log*
+lms-web/yarn-debug.log*
+lms-web/yarn-error.log*
+lms-web/package-lock.json
+lms-web/.cache/
+lms-web/.sass-cache/
+lms-web/.eslintcache
+
+# =========================
+# .NET Core (lms-api)
+# =========================
+lms-api/bin/
+lms-api/obj/
+lms-api/.vs/
+lms-api/.vscode/
+lms-api/Properties/launchSettings.json
+lms-api/appsettings.Development.json
+lms-api/appsettings.*.json
+lms-api/*.db
+lms-api/*.db-shm
+lms-api/*.db-wal
+
+# =========================
+# Environment / Secrets
+# =========================
+.env
+.env.local
+*.env
+
+# =========================
+# Build artifacts
+# =========================
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+*.lock
+*.nupkg
+*.snupkg
+*.bak
+*.tmp
+
+# =========================
+# Miscellaneous
+# =========================
+*.coverage
+*.coveragexml
+*.TestResults/
+*.publish/
+*.PublishProfiles/
+*.local.json
