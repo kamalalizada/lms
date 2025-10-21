@@ -1,0 +1,100 @@
+/* Container */
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Headings */
+h2 {
+  text-align: center;
+  color: #333;
+}
+
+h3 {
+  margin-top: 20px;
+  color: #555;
+}
+
+/* Form styling */
+.add-form,
+.edit-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add-form input,
+.edit-section input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.add-form button,
+.edit-section button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.add-form button:hover,
+.edit-section button:hover {
+  background-color: #0056b3;
+}
+
+/* User list */
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+li button {
+  margin-left: 5px;
+  padding: 5px 10px;
+  font-size: 12px;
+  background-color: #28a745;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+li button:hover {
+  opacity: 0.8;
+}
+
+li button:last-child {
+  background-color: #dc3545;
+}
+
+/* Edit section */
+.edit-section {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #eef2f7;
+}

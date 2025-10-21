@@ -1,0 +1,28 @@
+<div class="container mt-4">
+  <h2>User Management</h2>
+
+  <form (ngSubmit)="addUser()" class="add-form">
+    <input [(ngModel)]="newUser.fullname" name="fullName" placeholder="Full Name" required>
+    <input [(ngModel)]="newUser.email" name="email" placeholder="Email" required type="email">
+    <input [(ngModel)]="newUser.password" name="password" placeholder="Password" required type="password">
+    <button type="submit">Add</button>
+  </form>
+
+  <hr>
+
+  <ul>
+    <li *ngFor="let user of users">
+      <strong>{{ user.fullname }}</strong> ({{ user.email }})
+      <button (click)="editUser(user)">Edit</button>
+      <button (click)="deleteUser(user.id!)">Delete</button>
+    </li>
+  </ul>
+
+  <div *ngIf="editingUser" class="edit-section">
+    <h3>Edit User</h3>
+    <input [(ngModel)]="editingUser.fullname" placeholder="Full Name">
+    <input [(ngModel)]="editingUser.email" placeholder="Email">
+    <button (click)="updateUser()">Save</button>
+    <button (click)="editingUser = undefined">Cancel</button>
+  </div>
+</div>

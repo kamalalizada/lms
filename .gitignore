@@ -44,6 +44,8 @@ lms-api/appsettings.*.json
 lms-api/*.db
 lms-api/*.db-shm
 lms-api/*.db-wal
+**/obj
+**/bin
 
 # =========================
 # Environment / Secrets
