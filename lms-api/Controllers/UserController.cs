@@ -2,6 +2,8 @@
 using Business.Concrete;
 using Entity.Concrete;
 using Entity.Dto;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace LMS_API.Controllers
 {
@@ -49,15 +51,19 @@ namespace LMS_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CreateUserDto dto)
         {
+            // ✅ Parolu hash-ləyirik və salt yaradırıq
+            CreatePasswordHash(dto.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
             var user = new User
             {
                 FullName = dto.FullName,
                 Email = dto.Email,
-                Password = dto.Password 
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt
             };
 
             await _userService.AddAsync(user);
-            return Ok(new { message = "User created successfully" });
+            return Ok(new { message = "User created successfully (password hashed)" });
         }
 
         [HttpPut]
@@ -71,7 +77,10 @@ namespace LMS_API.Controllers
 
             if (!string.IsNullOrEmpty(dto.Password))
             {
-                user.Password = dto.Password; 
+                // ✅ Yenilənmiş parol üçün yeni hash və salt yaradırıq
+                CreatePasswordHash(dto.Password, out byte[] hash, out byte[] salt);
+                user.PasswordHash = hash;
+                user.PasswordSalt = salt;
             }
 
             await _userService.UpdateAsync(user);
@@ -86,6 +95,14 @@ namespace LMS_API.Controllers
 
             await _userService.DeleteAsync(id);
             return Ok(new { message = "User deleted successfully" });
+        }
+
+        // 🔒 Köməkçi metod: hash və salt yaradılması
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using var hmac = new HMACSHA512();
+            passwordSalt = hmac.Key;
+            passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
         }
     }
 }

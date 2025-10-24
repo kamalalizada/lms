@@ -1,5 +1,6 @@
 ﻿using DataAccess.Concrete;
 using Entity.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ public class UserService
         _repository = repository;
     }
 
+    [Authorize]
     public async Task<List<User>> GetAllAsync()=>await _repository.GetAllAsync();
 
     public async Task<User> GetByIdAsync(int id)=>await _repository.GetByIdAsync(id);

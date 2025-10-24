@@ -1,0 +1,9 @@
+<div class="auth-container">
+    <h2>Registration</h2>
+    <input type="text" [(ngModel)]="fullName" placeholder="FullName"/>
+    <input type="email" [(ngModel)]="email" placeholder="Email"/>
+    <input type="password" [(ngModel)]="password" placeholder="Password"/>
+    <button (click)="onRegister()">Register</button>
+    <p>{{message}}</p>
+    <a routerLink="/login">Do you have an account? Log In</a>
+</div>

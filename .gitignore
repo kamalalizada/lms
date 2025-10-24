@@ -46,6 +46,8 @@ lms-api/*.db-shm
 lms-api/*.db-wal
 **/obj
 **/bin
+**/x86
+**/.vs
 
 # =========================
 # Environment / Secrets
@@ -77,3 +79,4 @@ lms-api/*.db-wal
 *.publish/
 *.PublishProfiles/
 *.local.json
+/PasswordMigration

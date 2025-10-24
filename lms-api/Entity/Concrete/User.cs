@@ -13,7 +13,13 @@ public class User
 
     public string Email { get; set; }
 
+    public string Role { get; set; } = "Student";
+
+    [NotMapped]
     public string Password { get; set; } 
+
+    public byte[] PasswordHash { get; set; }
+    public byte[] PasswordSalt { get; set; }
 }
 
 

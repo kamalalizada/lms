@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -8,6 +8,34 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Business\bin\**" />
+    <Compile Remove="Business\obj\**" />
+    <Compile Remove="DataAccess\bin\**" />
+    <Compile Remove="DataAccess\obj\**" />
+    <Compile Remove="Entity\bin\**" />
+    <Compile Remove="Entity\obj\**" />
+    <Content Remove="Business\bin\**" />
+    <Content Remove="Business\obj\**" />
+    <Content Remove="DataAccess\bin\**" />
+    <Content Remove="DataAccess\obj\**" />
+    <Content Remove="Entity\bin\**" />
+    <Content Remove="Entity\obj\**" />
+    <EmbeddedResource Remove="Business\bin\**" />
+    <EmbeddedResource Remove="Business\obj\**" />
+    <EmbeddedResource Remove="DataAccess\bin\**" />
+    <EmbeddedResource Remove="DataAccess\obj\**" />
+    <EmbeddedResource Remove="Entity\bin\**" />
+    <EmbeddedResource Remove="Entity\obj\**" />
+    <None Remove="Business\bin\**" />
+    <None Remove="Business\obj\**" />
+    <None Remove="DataAccess\bin\**" />
+    <None Remove="DataAccess\obj\**" />
+    <None Remove="Entity\bin\**" />
+    <None Remove="Entity\obj\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
@@ -17,11 +45,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Business\Business.csproj" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.0" />
+    <PackageReference Include="UmbracoCms.Core" Version="8.18.15" />
   </ItemGroup>
 
 </Project>
