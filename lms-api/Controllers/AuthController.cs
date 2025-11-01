@@ -6,72 +6,72 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace LMS_API.Controllers;
-
-[Route("api/[controller]")]
-[ApiController]
-
-public class AuthController : ControllerBase
+namespace LMS_API.Controllers
 {
-    private readonly IAuthService _authService;
-    private readonly IConfiguration _config;
-
-
-    public AuthController(IAuthService authService, IConfiguration config)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : ControllerBase
     {
-        _authService = authService;
-        _config = config;
-    }
+        private readonly IAuthService _authService;
+        private readonly IConfiguration _config;
 
-    [HttpPost("register")]
-    public IActionResult Register([FromBody] UserRegisterDto dto)
-    {
-        if (_authService.UserExists(dto.Email))
-            return BadRequest("User already exists");
-
-        var user = _authService.Register(dto.FullName, dto.Email, dto.Password);
-        return Ok();
-    }
-
-    [HttpPost("login")]
-    public IActionResult Login([FromBody] UserLoginDto dto)
-    {
-        var user = _authService.Login(dto.Email, dto.Password);
-        if (user == null)
-            return Unauthorized("Invalid credentials");
-        var token = GenerateJwtToken(user);
-        return Ok(new
+        public AuthController(IAuthService authService, IConfiguration config)
         {
-            token,
-            user.Email,
-            user.FullName,
-            user.Role
-        });
-    }
+            _authService = authService;
+            _config = config;
+        }
 
-    private string GenerateJwtToken(User user)
-    {
-        var jwtSettings = _config.GetSection("Jwt");
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
-
-        var claims = new[]
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] UserRegisterDto dto)
         {
-            new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-            new Claim(ClaimTypes.Email,user.Email),
-            new Claim(ClaimTypes.Role,user.Role?? "Student")
-        };
+            if (await _authService.UserExists(dto.Email))
+                return BadRequest("User already exists");
 
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var user = await _authService.Register(dto.FullName, dto.Email, dto.Password);
+            return Ok(new { message = "User registered successfully", user.Email });
+        }
 
-        var token = new JwtSecurityToken(
-            issuer: jwtSettings["Issuer"],
-            audience: jwtSettings["Audince"],
-            claims: claims,
-            expires: DateTime.Now.AddDays(7),
-            signingCredentials: creds);
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginDto dto)
+        {
+            var user = await _authService.Login(dto.Email, dto.Password);
+            if (user == null)
+                return Unauthorized("Invalid credentials");
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+            var token = GenerateJwtToken(user);
+            return Ok(new
+            {
+                token,
+                user.Email,
+                user.FullName,
+                user.Role
+            });
+        }
+
+        private string GenerateJwtToken(User user)
+        {
+            var jwtSettings = _config.GetSection("Jwt");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role ?? "Student")
+            };
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddDays(7),
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
     }
 }
-

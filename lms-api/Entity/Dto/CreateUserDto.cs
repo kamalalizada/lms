@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entity.Dto;
-public class CreateUserDto
+namespace Entity.Dto
 {
-    public string FullName { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
+    public class CreateUserDto
+    {
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
 }
 

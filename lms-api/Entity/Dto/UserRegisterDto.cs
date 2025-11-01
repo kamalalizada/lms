@@ -1,8 +1,10 @@
-﻿namespace LMS_API.Entity.Dto;
-
-public class UserRegisterDto
+﻿namespace LMS_API.Entity.Dto
 {
-    public string FullName {  get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
+
+    public class UserRegisterDto
+    {
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
 }

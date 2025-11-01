@@ -1,50 +1,54 @@
-﻿using Business.Abstract;
-using DataAccess.Context;
-using Entity.Concrete;
-using Microsoft.EntityFrameworkCore;
+﻿using LMS_API.Business.Abstract;
+using LMS_API.Business.Mapper;
+using LMS_API.DataAccess.Interfaces;
+using LMS_API.Entity.Concrete;
+using LMS_API.Entity.Dto;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Business.Concrete;
-public class CourseService : ICourseService
+namespace LMS_API.Business.Concrete
 {
-    private readonly AppDbContext _context;
-
-    public CourseService(AppDbContext context)
+    public class CourseService : ICourseService
     {
-        _context = context;
-    }
+        private readonly ICourseDal _courseDal;
 
-    public async Task<List<Course>> GetAllAsync()
-    {
-        return await _context.Courses.ToListAsync();
-    }
-
-    public async Task<Course> GetByIdAsync(int id)
-    {
-        return await _context.Courses.FindAsync(id);
-    }
-
-    public async Task AddAsync(Course course)
-    {
-        await _context.Courses.AddAsync(course);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task UpdateAsync(Course course)
-    {
-        _context.Courses.Update(course);
-        await _context.SaveChangesAsync();
-
-    }
-
-    public async Task DeleteAsync(int id)
-    {
-        var course = await _context.Courses.FindAsync(id);
-        if (course != null)
+        public CourseService(ICourseDal courseDal)
         {
-            _context.Courses.Remove(course);
-            await _context.SaveChangesAsync();
+            _courseDal = courseDal;
+        }
 
+        public async Task<List<CourseDto>> GetAllAsync()
+        {
+            var courses = await _courseDal.GetAllAsync();
+            return courses.Select(c => CourseMapper.ToDto(c)).ToList();
+        }
+
+        public async Task<CourseDto> GetByIdAsync(int id)
+        {
+            var course = await _courseDal.GetAsync(c => c.Id == id);
+            return CourseMapper.ToDto(course);
+        }
+
+        public async Task AddAsync(CourseDto courseDto)
+        {
+            var entity = CourseMapper.ToEntity(courseDto);
+            await _courseDal.AddAsync(entity);
+        }
+
+        public async Task UpdateAsync(CourseDto courseDto)
+        {
+            var entity = CourseMapper.ToEntity(courseDto);
+            await _courseDal.UpdateAsync(entity);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var entity = await _courseDal.GetAsync(c => c.Id == id);
+            if (entity != null)
+            {
+                await _courseDal.DeleteAsync(entity);
+            }
         }
     }
 }

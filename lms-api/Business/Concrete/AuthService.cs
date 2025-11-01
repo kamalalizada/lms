@@ -1,12 +1,11 @@
 ﻿using Entity.Concrete;
 using LMS_API.Business.Abstract;
 using LMS_API.DataAccess.Interfaces;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Linq;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace LMS_API.Business.Concrete
 {
@@ -21,9 +20,11 @@ namespace LMS_API.Business.Concrete
             _configuration = configuration;
         }
 
-        public User Register(string fullName, string email, string password)
+        public async Task<User> Register(string fullName, string email, string password)
         {
-            CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+            byte[] passwordHash;
+            byte[] passwordSalt;
+            CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
             var user = new User
             {
@@ -34,13 +35,13 @@ namespace LMS_API.Business.Concrete
                 Role = "Student"
             };
 
-            _userDal.Add(user);
+            await _userDal.AddAsync(user); 
             return user;
         }
 
-        public User Login(string email, string password)
+        public async Task<User?> Login(string email, string password)
         {
-            var user = _userDal.Get(u => u.Email == email);
+            var user = await _userDal.GetAsync(u => u.Email == email); 
             if (user == null) return null;
 
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
@@ -55,27 +56,27 @@ namespace LMS_API.Business.Concrete
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-                new Claim(ClaimTypes.Email,user.Email),
-                new Claim(ClaimTypes.Role,user.Role),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role),
             };
 
-            var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
-                issuer:
-                jwtSettings["Issuer"],
-                audience:
-                jwtSettings["Audience"],
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
                 claims: claims,
-                expires:
-                DateTime.UtcNow.AddMinutes(Convert.ToDouble(jwtSettings["ExpireMinutes"])), signingCredentials: creds);
+                expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(jwtSettings["ExpireMinutes"])),
+                signingCredentials: creds
+            );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public bool UserExists(string email)
+        public async Task<bool> UserExists(string email)
         {
-            return _userDal.Get(u => u.Email == email) != null;
+            var user = await _userDal.GetAsync(u => u.Email == email); 
+            return user != null;
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

@@ -1,11 +1,16 @@
-﻿namespace LMS_API.DataAccess.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
-public interface IEntityRepository<T> where T : class
+namespace LMS_API.DataAccess.Interfaces
 {
-    void Add(T entity);
-    void Update(T entity);
-    void Delete(T entity);
-    T Get(System.Func<T, bool> predicate);
-    List<T> GetAll();
+    public interface IEntityRepository<T> where T : class
+    {
+        Task AddAsync(T entity);
+        Task UpdateAsync(T entity);
+        Task DeleteAsync(T entity);
+        Task<T> GetAsync(Expression<Func<T, bool>> predicate);
+        Task<List<T>> GetAllAsync();
+    }
 }
-

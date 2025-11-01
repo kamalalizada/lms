@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Entity.Concrete;
 
-namespace Business.Abstract;
-internal interface IUserService
+namespace Business.Abstract
 {
+    public interface IUserService
+    {
+        Task<List<User>> GetAllAsync();
+        Task<User> GetByIdAsync(int id);
+        Task AddAsync(User user);
+        Task UpdateAsync(User user);
+        Task DeleteAsync(int id);
+    }
 }

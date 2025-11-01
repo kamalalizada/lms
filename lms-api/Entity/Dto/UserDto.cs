@@ -1,10 +1,12 @@
-﻿namespace Entity.Dto;
-
-public class UserDto
+﻿namespace Entity.Dto
 {
-    public int Id { get; set; }          // User ID
-    public string FullName { get; set; } // Tam adı
-    public string Email { get; set; }    // Email
+
+    public class UserDto
+    {
+        public int Id { get; set; }
+        public string FullName { get; set; }
+        public string Email { get; set; }
+    }
 }
 
 

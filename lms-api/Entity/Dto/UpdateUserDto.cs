@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entity.Dto;
-public class UpdateUserDto
+namespace Entity.Dto
 {
-    public int Id { get; set; }
-    public string FullName { get; set; }
-    public string Email { get; set; }
-    public string? Password { get; set; } 
+    public class UpdateUserDto
+    {
+        public int Id { get; set; }
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string? Password { get; set; }
+    }
 }

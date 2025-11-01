@@ -51,7 +51,6 @@ namespace LMS_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CreateUserDto dto)
         {
-            // ✅ Parolu hash-ləyirik və salt yaradırıq
             CreatePasswordHash(dto.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             var user = new User
@@ -77,7 +76,6 @@ namespace LMS_API.Controllers
 
             if (!string.IsNullOrEmpty(dto.Password))
             {
-                // ✅ Yenilənmiş parol üçün yeni hash və salt yaradırıq
                 CreatePasswordHash(dto.Password, out byte[] hash, out byte[] salt);
                 user.PasswordHash = hash;
                 user.PasswordSalt = salt;
@@ -97,7 +95,6 @@ namespace LMS_API.Controllers
             return Ok(new { message = "User deleted successfully" });
         }
 
-        // 🔒 Köməkçi metod: hash və salt yaradılması
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using var hmac = new HMACSHA512();

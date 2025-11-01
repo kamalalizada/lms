@@ -1,16 +1,16 @@
-﻿using System;
+﻿using LMS_API.Entity.Concrete;
+using LMS_API.Entity.Dto;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Entity.Concrete;
 
-namespace Business.Abstract;
-public interface ICourseService
+namespace LMS_API.Business.Abstract
 {
-    Task<List<Course>> GetAllAsync();
-    Task<Course>GetByIdAsync(int id);
-    Task AddAsync(Course course);
-    Task UpdateAsync(Course course);
-    Task DeleteAsync(int id);
+    public interface ICourseService
+    {
+        Task<List<CourseDto>> GetAllAsync();
+        Task<CourseDto> GetByIdAsync(int id);
+        Task AddAsync(CourseDto courseDto);
+        Task UpdateAsync(CourseDto courseDto);
+        Task DeleteAsync(int id);
+    }
 }

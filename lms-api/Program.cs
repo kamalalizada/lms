@@ -1,16 +1,13 @@
-using Entity.Concrete;
 using Business.Abstract;
 using Business.Concrete;
-using DataAccess.Context;
-using Microsoft.EntityFrameworkCore;
-using DataAccess.Concrete;
 using LMS_API.Business.Abstract;
-using LMS_API.DataAccess.Concrete;
-using LMS_API.DataAccess.Interfaces;
 using LMS_API.Business.Concrete;
-using System.Text;
+using LMS_API.DataAccess.Concrete.EntityFramework;
+using LMS_API.DataAccess.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,20 +32,30 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddDbContext<LMSContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
     options.AddPolicy("RequireInstructorRole", policy => policy.RequireRole("Instructor"));
 });
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<UserRepository, UserRepository>();
-builder.Services.AddScoped<UserService, UserService>();
-builder.Services.AddScoped<ICourseService, CourseService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserDal, EfUserDal>();
+builder.Services.AddScoped<ICourseDal, EfCourseDal>();
+builder.Services.AddScoped<IStudentDal, EfStudentDal>();
+builder.Services.AddScoped<IInstructorDal, EfInstructorDal>();
+
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IInstructorService, InstructorService>();
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -67,9 +74,8 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var context = scope.ServiceProvider.GetRequiredService<LMSContext>();
     context.Database.Migrate();
-    SeedData.Initialize(context);
 }
 
 if (app.Environment.IsDevelopment())
@@ -79,12 +85,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseCors("AllowAngularDev");
-
-app.UseAuthentication(); 
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

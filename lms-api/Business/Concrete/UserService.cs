@@ -1,30 +1,45 @@
-﻿using DataAccess.Concrete;
-using Entity.Concrete;
-using Microsoft.AspNetCore.Authorization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Business.Abstract;
+using Entity.Concrete;
+using LMS_API.DataAccess.Interfaces;
 
-namespace Business.Concrete;
-public class UserService
+namespace Business.Concrete
 {
-    private readonly UserRepository _repository;
-
-    public UserService(UserRepository repository)
+    public class UserService : IUserService
     {
-        _repository = repository;
+        private readonly IUserDal _userDal;
+
+        public UserService(IUserDal userDal)
+        {
+            _userDal = userDal;
+        }
+
+        public async Task<List<User>> GetAllAsync()
+        {
+            return await _userDal.GetAllAsync();
+        }
+
+        public async Task<User> GetByIdAsync(int id)
+        {
+            return await _userDal.GetAsync(u => u.Id == id);
+        }
+
+        public async Task AddAsync(User user)
+        {
+            await _userDal.AddAsync(user);
+        }
+
+        public async Task UpdateAsync(User user)
+        {
+            await _userDal.UpdateAsync(user);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var existing = await _userDal.GetAsync(u => u.Id == id);
+            if (existing != null)
+                await _userDal.DeleteAsync(existing);
+        }
     }
-
-    [Authorize]
-    public async Task<List<User>> GetAllAsync()=>await _repository.GetAllAsync();
-
-    public async Task<User> GetByIdAsync(int id)=>await _repository.GetByIdAsync(id);
-
-    public async Task AddAsync(User user)=>await _repository.AddAsync(user);
-
-    public async Task UpdateAsync(User user)=>await _repository.UpdateAsync(user);
-
-    public async Task DeleteAsync(int id)=>await _repository.DeleteAsync(id);
 }
