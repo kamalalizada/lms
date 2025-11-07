@@ -1,0 +1,10 @@
+<h2>Create Course</h2>
+
+<label>Title</label>
+<input [(ngModel)]="model.title">
+
+<label>Description</label>
+<textarea
+[(ngModel)]="model.description"></textarea>
+
+<button (click)="createCourse()">Create</button>

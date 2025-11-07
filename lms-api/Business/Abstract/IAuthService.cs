@@ -8,6 +8,9 @@ namespace LMS_API.Business.Abstract
         Task<User> Register(string fullName, string email, string password);
         Task<User?> Login(string email, string password);
         Task<bool> UserExists(string email);
+        Task<bool> ResetPassword(string email, string newPassword);
         string CreateToken(User user);
     }
+
+    
 }

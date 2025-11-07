@@ -1,0 +1,23 @@
+<h2>{{course?.title}}</h2>
+
+<div class="modules">
+    <h3>Modules</h3>
+
+    <div *ngFor="let m of course?.modules">
+        <h4>{{m.title}}</h4>
+
+        <ul>
+            <li *ngFor="let l of m.lessons">
+                <button (click)="openLesson(l)">{{l.title}}</button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<hr>
+
+<div *ngFor="selectedLesson">
+    <h3>{{selectedLesson.title}}</h3>
+    <p>{{selectedLesson.content}}</p>
+</div>
+

@@ -79,6 +79,19 @@ namespace LMS_API.Business.Concrete
             return user != null;
         }
 
+        public async Task<bool> ResetPassword(string email,string newPassword)
+        {
+            var user =  await _userDal.GetAsync(u => u.Email == email);
+            if (user == null) return false;
+            CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+
+            user.PasswordHash=passwordHash;
+            user.PasswordSalt=passwordSalt;
+
+            _userDal.UpdateAsync(user);
+            return true;
+        }
+
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using var hmac = new HMACSHA512();
@@ -92,5 +105,7 @@ namespace LMS_API.Business.Concrete
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             return computedHash.SequenceEqual(hash);
         }
+
+
     }
 }

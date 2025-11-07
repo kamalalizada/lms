@@ -1,0 +1,6 @@
+<h2>Courses</h2>
+<div *ngFor="let c of courses" class="course-card">
+    <h3>{{c.title}}</h3>
+    <p>{{c.description}}</p>
+    <a [routerLink]="[c.id]">View details</a>
+</div>

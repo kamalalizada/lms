@@ -1,0 +1,10 @@
+<h2>My courses</h2>
+
+<div *ngFor="let c of courses">
+    <h3>{{c.title}}</h3>
+    <p>{{c.description}}</p>
+    <a [routerLink]="['/student/lesson-view',c.id]">Open Course</a>
+    <hr>
+</div>
+
+

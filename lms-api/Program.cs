@@ -48,6 +48,7 @@ builder.Services.AddScoped<IUserDal, EfUserDal>();
 builder.Services.AddScoped<ICourseDal, EfCourseDal>();
 builder.Services.AddScoped<IStudentDal, EfStudentDal>();
 builder.Services.AddScoped<IInstructorDal, EfInstructorDal>();
+builder.Services.AddScoped<IEnrollmentDal, EfEnrollmentDal>();
 
 
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -55,6 +56,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IInstructorService, InstructorService>();
+builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 
 
 builder.Services.AddControllers();

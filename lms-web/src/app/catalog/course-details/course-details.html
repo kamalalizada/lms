@@ -1,0 +1,23 @@
+<div *ngIf="loading">
+    <p>Loading...</p>
+</div>
+
+<div *ngIf="!loading">
+    <h2>{{course?.title}}</h2>
+    <p>{{course?.description}}</p>
+    <button (click)="enroll()">Enroll</button>
+
+    <hr>
+
+    <h3>Modules</h3>
+
+    <div *ngFor="let module of course?.modules">
+        <h4>{{module.title}}</h4>
+        <ul>
+            <li *ngFor="let lesson of module.lessons">{{lesson.title}}</li>
+        </ul>
+        <hr>
+    </div>
+</div>
+
+

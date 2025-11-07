@@ -9,6 +9,7 @@ import { RoleGuard } from "./guards/role-guard";
 import { AdminDashboard } from "./pages/admin-dashboard/admin-dashboard";
 import { InstructorDashboard } from "./pages/instructor-dashboard/instructor-dashboard";
 import { StudentDashboard } from "./pages/student-dashboard/student-dashboard";
+import { CourseService } from "./services/course";
 
 
 
@@ -25,7 +26,10 @@ const routes:Routes=[
     {path:'', redirectTo: '/login', pathMatch:'full'},
     {path:'admin', component:AdminDashboard,canActivate:[RoleGuard],data:{roles:['Admin']}},
     {path:'instructor',component:InstructorDashboard, canActivate:[RoleGuard], data:{roles:['Instructor']}},
-    {path:'student', component:StudentDashboard, canActivate:[RoleGuard], data:{roles:['Student']}}
+    {path:'student', component:StudentDashboard, canActivate:[RoleGuard], data:{roles:['Student']}},
+    { path: 'catalog', loadChildren: () => import('./catalog/catalog-module').then(m => m.CatalogModule) },
+    {path:'catalog', loadChildren:()=>import('./catalog/catalog-module').then(m=>m.CatalogModule)},
+    { path: 'instructor', loadChildren: () => import('./instructor/instructor-module').then(m => m.InstructorModule) }
 ];
 
 @NgModule({

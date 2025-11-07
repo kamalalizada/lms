@@ -50,6 +50,15 @@ namespace LMS_API.Controllers
             });
         }
 
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDto dto)
+        {
+            var result = await _authService.ResetPassword(dto.Email,dto.NewPassword);
+            if (!result)
+                return BadRequest();
+            return Ok();
+        }
+
         private string GenerateJwtToken(User user)
         {
             var jwtSettings = _config.GetSection("Jwt");

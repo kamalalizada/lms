@@ -1,0 +1,11 @@
+<h2>Your Courses</h2>
+
+<a routerLink="/instructor/create">+Create Course</a>
+
+<div *ngFor="let c of courses">
+    <h3>{{c.title}}</h3>
+    <a [routerLink]="['/instructor',c.id,'module','create']">Add Modules </a>
+    <br>
+    <a [routerLink]="['/catalog',c.id]">Preview</a>
+    <hr>
+</div>
