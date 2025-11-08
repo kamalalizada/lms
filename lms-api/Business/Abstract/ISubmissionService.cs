@@ -6,7 +6,14 @@ namespace LMS_API.Business.Abstract;
 public interface ISubmissionService
 {
     Task SubmissionAsync(SubmissionCreateDto dto);
-    void Grade(int submissionId,GradeDto dto);
-    List<Submission> GetSubmissionByAssignment(int assignmentId);
-    List<Submission> GetSubmissionByStudent(int studentId);
+    Task Grade(int submissionId, GradeDto dto);
+
+    Task<List<Submission>> GetSubmissionByAssignment(int assignmentId);
+    Task<List<Submission>> GetSubmissionByStudent(int studentId);
+
+    Task<int> CountPending(int assignmentId);
+    Task<int> CountLate(int assignmentId);
+    Task<int> CountOnTime(int assignmentId);
+
+    Task<SubmissionStatsDto> GetStats(int assignmentId);
 }

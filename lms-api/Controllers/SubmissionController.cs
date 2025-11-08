@@ -23,7 +23,7 @@ public class SubmissionController:ControllerBase
     }
 
     [HttpPatch("{id}/grade")]
-    public IActionResult Grade (int id,GradeDto dto)
+    public IActionResult Grade (int id,[FromBody] GradeDto dto)
     {
         _submissionService.Grade(id, dto);
         return Ok();
@@ -40,6 +40,13 @@ public class SubmissionController:ControllerBase
     public IActionResult GetByStudent(int studentId)
     {
         var result =_submissionService.GetSubmissionByStudent(studentId);
+        return Ok(result);
+    }
+
+    [HttpGet("stats/{assignmentId}")]
+    public IActionResult GetStats(int assignmentId)
+    {
+        var result  = _submissionService.GetStats(assignmentId);
         return Ok(result);
     }
      
