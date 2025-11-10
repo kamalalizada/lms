@@ -88,7 +88,7 @@ namespace LMS_API.Business.Concrete
             user.PasswordHash=passwordHash;
             user.PasswordSalt=passwordSalt;
 
-            _userDal.UpdateAsync(user);
+            await _userDal.UpdateAsync(user);
             return true;
         }
 

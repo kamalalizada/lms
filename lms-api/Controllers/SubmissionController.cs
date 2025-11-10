@@ -13,7 +13,7 @@ public class SubmissionController:ControllerBase
     public SubmissionController (ISubmissionService submissionService)
     {
         _submissionService = submissionService;
-    }
+    } 
 
     [HttpPost]
     public async Task<IActionResult> Submit([FromForm] SubmissionCreateDto dto)

@@ -1,0 +1,55 @@
+<div class="container mt-4">
+
+  <div *ngIf="loading">Loading...</div>
+
+  <div *ngIf="!loading">
+
+    <h2>{{ assignment.title }}</h2>
+    <p>{{ assignment.description }}</p>
+
+    <!-- <p><strong>Deadline:</strong> {{ assignment.deadline | date }}</p> -->
+
+    <hr />
+
+    <div *ngIf="userRole === 'Student'">
+
+      <div *ngIf="!studentSubmission">
+        <p>You have not submitted this assignment yet.</p>
+        <button class="btn btn-primary" (click)="goToSubmit()">Submit Assignment</button>
+      </div>
+
+      <div *ngIf="studentSubmission">
+        <h4>Your Submission</h4>
+        <p><strong>Status:</strong> Submitted</p>
+        <p><strong>Grade:</strong> {{ studentSubmission.grade || 'Not graded yet' }}</p>
+      </div>
+
+    </div>
+
+    <div *ngIf="userRole === 'Instructor'">
+      <h4>Submissions</h4>
+
+      <div *ngIf="submissions.length === 0">
+        <p>No submissions yet.</p>
+      </div>
+
+      <ul class="list-group" *ngIf="submissions.length > 0">
+        <li
+          *ngFor="let s of submissions"
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          <span>
+            Student ID: {{ s.studentId }}  
+            — Grade: {{ s.grade || 'Not graded' }}
+          </span>
+
+          <button class="btn btn-success btn-sm" (click)="grade(s.id)">
+            Grade
+          </button>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>

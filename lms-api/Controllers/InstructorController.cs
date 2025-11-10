@@ -15,11 +15,14 @@ namespace LMS_API.Controllers
     {
         private readonly IInstructorService _instructorService;
         private readonly IUserService _userService;
+        private readonly IInstructorDashboardService _dashboardService;
 
-        public InstructorController(IInstructorService instructorService, IUserService userService)
+
+        public InstructorController(IInstructorService instructorService, IUserService userService,IInstructorDashboardService dashboardService)
         {
             _instructorService = instructorService;
             _userService = userService;
+            _dashboardService = dashboardService;
         }
 
         [HttpGet]
@@ -50,6 +53,14 @@ namespace LMS_API.Controllers
 
             return Ok(ApiResponse<InstructorDto>.SuccessResponse(dto));
         }
+
+        [HttpGet("dashboard/{userId}")]
+        public async Task<IActionResult> GetDashboard(int userId)
+        {
+            var dashboard = await _dashboardService.GetDashboard(userId);
+            return Ok(dashboard);
+        }
+
 
         [HttpPost]
         public async Task<ActionResult<ApiResponse<string>>> Add([FromBody] InstructorDto dto)

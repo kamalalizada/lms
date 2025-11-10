@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Business.Concrete;
 using Entity.Concrete;
 using Entity.Dto;
 using System.Security.Cryptography;
 using System.Text;
+using LMS_API.Business.Concrete;
+using Business.Abstract;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LMS_API.Controllers
 {
@@ -11,14 +13,15 @@ namespace LMS_API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        public UserController(UserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var users = await _userService.GetAllAsync();

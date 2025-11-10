@@ -16,6 +16,10 @@ namespace LMS_API.DataAccess.Concrete.EntityFramework
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<StudentCourse> StudentCourses { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
+        public DbSet<Submission> Submissions { get; set; }
+        public DbSet<Module> Modules { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

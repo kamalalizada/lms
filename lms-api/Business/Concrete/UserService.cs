@@ -4,7 +4,7 @@ using Business.Abstract;
 using Entity.Concrete;
 using LMS_API.DataAccess.Interfaces;
 
-namespace Business.Concrete
+namespace LMS_API.Business.Concrete
 {
     public class UserService : IUserService
     {

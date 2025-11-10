@@ -1,15 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Router, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthGuard } from './auth-guard';
 import { AuthService } from '../services/auth.service';
 
-describe('AuthGuard (class-based)', () => {
+describe('AuthGuard with role', () => {
   let guard: AuthGuard;
   let authServiceSpy: jasmine.SpyObj<AuthService>;
   let routerSpy: jasmine.SpyObj<Router>;
+  let routeSnapshot: ActivatedRouteSnapshot;
 
   beforeEach(() => {
-    authServiceSpy = jasmine.createSpyObj('AuthService', ['isAuthenticated']);
+    authServiceSpy = jasmine.createSpyObj('AuthService', ['isAuthenticated', 'getRole']);
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
@@ -21,16 +22,32 @@ describe('AuthGuard (class-based)', () => {
     });
 
     guard = TestBed.inject(AuthGuard);
+    routeSnapshot = new ActivatedRouteSnapshot();
   });
 
-  it('should allow route if authenticated', () => {
+  it('should allow route if authenticated and role matches', () => {
     authServiceSpy.isAuthenticated.and.returnValue(true);
-    expect(guard.canActivate()).toBeTrue();
+    authServiceSpy.getRole.and.returnValue('instructor');
+    routeSnapshot.data = { role: 'instructor' };
+
+    expect(guard.canActivate(routeSnapshot)).toBeTrue();
+  });
+
+  it('should block route if authenticated but role does not match', () => {
+    authServiceSpy.isAuthenticated.and.returnValue(true);
+    authServiceSpy.getRole.and.returnValue('student');
+    routeSnapshot.data = { role: 'instructor' };
+
+    const result = guard.canActivate(routeSnapshot);
+    expect(result).toBeFalse();
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/login']);
   });
 
   it('should redirect to login if not authenticated', () => {
     authServiceSpy.isAuthenticated.and.returnValue(false);
-    const result = guard.canActivate();
+    routeSnapshot.data = { role: 'instructor' };
+
+    const result = guard.canActivate(routeSnapshot);
     expect(result).toBeFalse();
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/login']);
   });

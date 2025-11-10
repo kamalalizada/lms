@@ -1,5 +1,4 @@
 using Business.Abstract;
-using Business.Concrete;
 using LMS_API.Business.Abstract;
 using LMS_API.Business.Concrete;
 using LMS_API.DataAccess.Concrete.EntityFramework;

@@ -1,36 +1,47 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
+
+interface AuthResponse {
+  token: string;
+  role: string;
+}
 
 @Component({
   selector: 'app-login',
-  standalone:false,
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrls: ['./login.css'],
+  standalone: false
 })
 export class Login {
-  email : string='';
-  password : string = '';
-  message : string = '';
+  email: string = '';
+  password: string = '';
+  message: string = '';
 
-  constructor(private authService:AuthService,private router : Router){}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  onLogin(){
-    this.authService.login(this.email,this.password).subscribe({
-      next:(response : any)=>{
-        this.authService.saveToken(response.token,response.role);
-
+  onLogin() {
+    this.authService.login(this.email, this.password).subscribe({
+      next: (response: AuthResponse) => {
         this.message = 'Login successful! Redirecting...';
 
-      setTimeout(()=>{
-        this.router.navigate(['/home']);
-      },1000);
-      },
+        const role = response.role?.toLowerCase().trim();
 
-      error:(err)=>{
-        this.message='Email or password is incorrect.!';
+        setTimeout(() => {
+          if (role === 'instructor') {
+            this.router.navigate(['/instructor']);
+          } else if (role === 'student') {
+            this.router.navigate(['/student']);
+          } else if (role === 'admin') {
+            this.router.navigate(['/admin']);
+          } else {
+            this.router.navigate(['/login']);
+          }
+        }, 500);
+      },
+      error: () => {
+        this.message = 'Email or password is incorrect!';
       }
     });
   }
-
 }

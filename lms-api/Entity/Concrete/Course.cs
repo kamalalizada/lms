@@ -16,6 +16,9 @@
 
         public ICollection<StudentCourse> StudentCourses { get; set; } = new List<StudentCourse>();
 
+        public ICollection<Module> Modules { get; set; }
+
+
 
     }
 }

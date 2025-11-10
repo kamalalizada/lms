@@ -11,6 +11,8 @@ public class Submission
     public string Status {  get; set; }
     public int? Grade { get; set; }
     public string Feedback {  get; set; }
+    public int CourseId { get; set; }   
+    public Course Course { get; set; }
 
     public Assignment Assignment { get; set; }
     public Student Student { get; set; }
